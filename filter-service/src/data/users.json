@@ -1,0 +1,18 @@
+[
+  { "id": 1, "name": "Alice",   "age": 59 },
+  { "id": 2, "name": "Bob",     "age": 11 },
+  { "id": 3, "name": "Charlie", "age": 0 },
+  { "id": 4, "name": "Set",     "age": 28 },
+  { "id": 5, "name": "Mike",    "age": 29 },
+  { "id": 6,                    "age": 30 },
+  {
+    "id": 7,
+    "name": "John",
+    "age": 31,
+    "address": {
+      "street": "123 Main St",
+      "city": "New York",
+      "zip": "10001"
+    }
+  }
+]

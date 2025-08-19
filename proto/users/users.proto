@@ -1,0 +1,17 @@
+syntax = "proto3";
+package users;
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/struct.proto";
+
+service UserService {
+  rpc GetFilteredUsers (google.protobuf.Empty) returns (stream User);
+}
+
+message User {
+  int32 id = 1;
+  string name = 2;
+  int32 age = 3;
+  // Untyped addon per-user
+  google.protobuf.Struct additional_info = 4;
+}

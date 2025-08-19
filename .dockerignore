@@ -1,0 +1,4 @@
+filter-service/node_modules
+filter-service/dist
+logger-service/node_modules
+logger-service/dist

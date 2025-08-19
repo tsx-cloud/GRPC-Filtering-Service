@@ -1,0 +1,28 @@
+services:
+  filter-service:
+    build:
+      context: .
+      dockerfile: Dockerfile.filter
+    container_name: filter-service
+    ports:
+      - "50052:50052"
+    networks:
+      - grpc-network
+    environment:
+      - FILTER_SERVICE_URL=0.0.0.0:50052
+
+  logger-service:
+    build:
+      context: .
+      dockerfile: Dockerfile.logger
+    container_name: logger-service
+    depends_on:
+      - filter-service
+    networks:
+      - grpc-network
+    environment:
+      - FILTER_SERVICE_URL=filter-service:50052
+
+networks:
+  grpc-network:
+    driver: bridge
