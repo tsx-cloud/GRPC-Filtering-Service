@@ -1,10 +1,15 @@
-This repository contains a simple NestJS-based GRPC microservices example. The goal is to demonstrate basic GRPC communication between two microservices: a **filter-service** and a **logger-service**.
+This repository contains a simple example of NestJS-based gRPC microservices.  
+The goal is to demonstrate basic communication between two microservices: **filter-service** and **logger-service**.
 
-The **filter-service** reads user data from a JSON file, filters users with age > 18 on the fly, and streams the filtered results to the **logger-service**.  
-The **logger-service** calls **filter-service** via GRPC, receives the filtered users as a stream, and logs them to the console.  
-Users can have any number of fields with arbitrary nesting.  
-Both services share the same `users.proto` schema. The GRPC SDK is generated using protoc-gen-ts_proto.  
+- **filter-service**  
+  Reads user data from a JSON file, filters users with `age > 18` on the fly, and streams the filtered results to **logger-service**.
 
+- **logger-service**  
+  Calls **filter-service** via gRPC, receives the filtered users as a stream, and logs them to the console.
+
+ Users may have any number of fields with arbitrary nesting.  
+ Both services share the same `users.proto` schema.  
+ The gRPC SDK is generated using [`protoc-gen-ts_proto`]
 
 ## GRPC API
 
