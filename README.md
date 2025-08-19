@@ -1,9 +1,10 @@
 This repository contains a simple NestJS-based GRPC microservices example. The goal is to demonstrate basic GRPC communication between two microservices: a **filter-service** and a **logger-service**.
 
-The **filter-service** reads user data from a JSON file, filters users with age > 18 on the fly, and streams the filtered results to the **logger-service**. The **logger-service** calls **filter-service** via GRPC, receives the filtered users as a stream, and logs them to the console.
-Users can have any number of fields with arbitrary nesting.
-Both services share the same `users.proto` schema. The GRPC SDK is generated using protoc-gen-ts_proto.
----
+The **filter-service** reads user data from a JSON file, filters users with age > 18 on the fly, and streams the filtered results to the **logger-service**.  
+The **logger-service** calls **filter-service** via GRPC, receives the filtered users as a stream, and logs them to the console.  
+Users can have any number of fields with arbitrary nesting.  
+Both services share the same `users.proto` schema. The GRPC SDK is generated using protoc-gen-ts_proto.  
+
 
 ## GRPC API
 
@@ -106,13 +107,13 @@ LOG [UsersService] {"id":7,"name":"John","age":31,"address":{"street":"123 Main 
 
 ```
 ---
-##Environment Variables**
+## Environment Variables
 
-filter-service:
+**filter-service**:
 * `FILTER_SERVICE_URL` – default: `0.0.0.0:50052`
 * `USERS_DATA_PATH` – default: `./src/data/users.json`
 
-logger-service:
+**logger-service**:
 * `FILTER_SERVICE_URL` – default: `0.0.0.0:50052`
 
 
@@ -123,7 +124,7 @@ Used Libraries:
 * **joi** – for validating environment variables.
 * **grpc** – for communication between microservices.
 
-After modifying the .proto file, run proto-gen.sh in the root folder of each service to regenerate the GRPC SDK
+After modifying the .proto file, run proto-gen.sh in the root folder of each service to regenerate the GRPC SDK  
 
-End-to-end (E2E) tests for the filter-service can be run with: npm run test:e2e
-TODO: Add unit tests for both services.
+End-to-end (E2E) tests for the filter-service can be run with: ```npm run test:e2e ```  
+TODO: Add unit tests for both services.  
