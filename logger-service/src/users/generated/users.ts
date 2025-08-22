@@ -20,17 +20,13 @@ export interface User {
   name: string;
   age: number;
   /** Untyped addon per-user */
-  additionalInfo: { [key: string]: any } | undefined;
-}
-
-export interface UsersResponse {
-  users: User[];
+  additionalInfo?: { [key: string]: any } | undefined;
 }
 
 export const USERS_PACKAGE_NAME = "users";
 
 function createBaseUser(): User {
-  return { id: 0, name: "", age: 0, additionalInfo: undefined };
+  return { id: 0, name: "", age: 0 };
 }
 
 export const User: MessageFns<User> = {
@@ -87,43 +83,6 @@ export const User: MessageFns<User> = {
           }
 
           message.additionalInfo = Struct.unwrap(Struct.decode(reader, reader.uint32()));
-          continue;
-        }
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
-};
-
-function createBaseUsersResponse(): UsersResponse {
-  return { users: [] };
-}
-
-export const UsersResponse: MessageFns<UsersResponse> = {
-  encode(message: UsersResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.users) {
-      User.encode(v!, writer.uint32(10).fork()).join();
-    }
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): UsersResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    const end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseUsersResponse();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1: {
-          if (tag !== 10) {
-            break;
-          }
-
-          message.users.push(User.decode(reader, reader.uint32()));
           continue;
         }
       }

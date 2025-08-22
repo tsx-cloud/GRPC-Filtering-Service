@@ -39,7 +39,7 @@ export interface Struct {
 
 export interface Struct_FieldsEntry {
   key: string;
-  value: any | undefined;
+  value?: any | undefined;
 }
 
 /**
@@ -151,7 +151,7 @@ export const Struct: MessageFns<Struct> & StructWrapperFns = {
 };
 
 function createBaseStruct_FieldsEntry(): Struct_FieldsEntry {
-  return { key: "", value: undefined };
+  return { key: "" };
 }
 
 export const Struct_FieldsEntry: MessageFns<Struct_FieldsEntry> = {

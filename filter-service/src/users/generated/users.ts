@@ -20,13 +20,13 @@ export interface User {
   name: string;
   age: number;
   /** Untyped addon per-user */
-  additionalInfo: { [key: string]: any } | undefined;
+  additionalInfo?: { [key: string]: any } | undefined;
 }
 
 export const USERS_PACKAGE_NAME = "users";
 
 function createBaseUser(): User {
-  return { id: 0, name: "", age: 0, additionalInfo: undefined };
+  return { id: 0, name: "", age: 0 };
 }
 
 export const User: MessageFns<User> = {

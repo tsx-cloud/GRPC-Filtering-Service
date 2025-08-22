@@ -1,7 +1,11 @@
 #!/bin/bash
+# This script generates a JSON file with random "user" objects.
+# Each user has an id, a name and a random age (0-99).
+# The script continues generating users until the output file reaches approximately 5 MB.
+# The resulting file is saved as "users.json".
 
 OUTPUT_FILE="users.json"
-TARGET_SIZE=$((20 * 1024 * 1024)) # 100 MB
+TARGET_SIZE=$((5 * 1024 * 1024)) # 5 MB
 echo "[" > "$OUTPUT_FILE"
 
 ID=1
