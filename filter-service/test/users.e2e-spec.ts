@@ -2,19 +2,14 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import { Transport, MicroserviceOptions } from '@nestjs/microservices';
 import { join } from 'path';
-import * as grpc from '@grpc/grpc-js';
-import * as protoLoader from '@grpc/proto-loader';
 import { AppModule } from '../src/app.module';
 import { User } from '../src/users/generated/users';
 import { ConfigService } from '@nestjs/config';
-
-interface UserServiceClient extends grpc.Client {
-  getFilteredUsers(data: {}): grpc.ClientReadableStream<User>;
-}
+import { FilterServiceClient, createGrpcClient } from './test-grpc-client';
 
 describe('UsersController (e2e)', () => {
   let app: INestApplication;
-  let client: UserServiceClient;
+  let grpcClient: FilterServiceClient;
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -30,10 +25,10 @@ describe('UsersController (e2e)', () => {
       transport: Transport.GRPC,
       options: {
         package: 'users',
-        protoPath: join(__dirname, 'users.proto'),
+        protoPath: join(__dirname, '../../proto/users/users.proto'),
         url: filterServiceUrl,
         loader: {
-          includeDirs: [__dirname],
+          includeDirs: [join(__dirname, '../../proto/users')],
         },
       },
     });
@@ -41,18 +36,7 @@ describe('UsersController (e2e)', () => {
     await app.startAllMicroservices();
     await app.init();
 
-    const packageDefinition = protoLoader.loadSync(
-      join(__dirname, 'users.proto'),
-      {
-        includeDirs: [__dirname],
-      },
-    );
-    const protoGRPC = grpc.loadPackageDefinition(packageDefinition) as any;
-
-    client = new protoGRPC.users.UserService(
-      filterServiceUrl,
-      grpc.credentials.createInsecure(),
-    );
+    grpcClient = createGrpcClient(filterServiceUrl);
   });
 
   afterAll(async () => {
@@ -61,12 +45,10 @@ describe('UsersController (e2e)', () => {
 
   it('should return a stream of users from the test file', (done) => {
     const users: User[] = [];
-    const call = client.getFilteredUsers({});
-    
+    const call = grpcClient.getFilteredUsers({});
     call.on('data', (user: User) => {
       users.push(user);
     });
-
     call.on('end', () => {
       console.log(users);
       expect(users.length).toBe(4);
@@ -77,10 +59,8 @@ describe('UsersController (e2e)', () => {
       expect(users[3].additionalInfo).toBeDefined();
       done();
     });
-
     call.on('error', (error) => {
       done(error);
     });
   });
 });
-
